@@ -1,0 +1,37 @@
+body {
+    font-family: Montserrat, sans-serif;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 360px;
+}
+label {
+    display: flex;
+    flex-direction: column;
+}
+fieldset {
+    display: flex;
+    justify-content: space-around;
+    border-radius: 4px;
+    stroke-width: 1px;
+    stroke: #808080;
+}
+fieldset > label {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+
+}
+button {
+    background-color:  #4e75ff;
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-top: 24px;
+}
+button:hover {
+    background-color: #6c8cff;
+}
