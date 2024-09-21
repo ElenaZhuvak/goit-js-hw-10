@@ -13,7 +13,7 @@ const minutesEl = document.querySelector('[data-minutes]');
 const secondsEl = document.querySelector('[data-seconds]');
 
 let userSelectedDate;
-let countdouwnInterval;
+let countdownInterval;
 
 flatpickr('#datetime-picker', {
     enableTime: true,
@@ -35,13 +35,6 @@ flatpickr('#datetime-picker', {
     }
 });
 
-
-buttonEl.addEventListener('click', onClickStart);
-function onClickStart () {
-
-}
-
-
 function convertMs(ms) {
     const second = 1000;
     const minute = second * 60;
@@ -55,5 +48,51 @@ function convertMs(ms) {
   
     return { days, hours, minutes, seconds };
   }
-  
+
+function addLeadingZero (value) {
+    return value.toString().padStart(2, '0');
+}
+
+function updateTimer (endTime) {
+    const currentTime = new Date().getTime();
+    const timeLeft = endTime - currentTime;
+
+    if(timeLeft === 0) {
+        clearInterval(countdownInterval);
+        clockFace({days: 0, hours: 0, minutes: 0, seconds: 0});
+        buttonEl.disabled = false;
+        inputEl.disabled = false;
+        iziToast.success({
+            title: 'Countdown finished',
+            message: 'The timer has reached zero!',
+            position: 'topRight' 
+        });
+        return;
+    }
+
+        const time = convertMs(timeLeft);
+        clockFace(time);
+}
+
+function clockFace (time) {
+    daysEl.textContent = addLeadingZero(time.days);
+    hoursEl.textContent = addLeadingZero(time.hours);
+    minutesEl.textContent = addLeadingZero(time.minutes);
+    secondsEl.textContent = addLeadingZero(time.seconds);
+}
+
+
+buttonEl.addEventListener('click', onClickStart);
+function onClickStart () {
+    if (userSelectedDate) {
+        buttonEl.disabled = true;
+        inputEl.disabled = true;
+        const endTime = userSelectedDate.getTime();
+        updateTimer(endTime);
+        countdownInterval = setInterval(() => updateTimer(endTime), 1000);
+    }
+}
+
+
+
 
